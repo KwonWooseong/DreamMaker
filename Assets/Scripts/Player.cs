@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-
     int x, z, tempX, tempZ, tempCameraNum;
 
     public int cameraNum;
