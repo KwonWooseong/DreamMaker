@@ -43,7 +43,8 @@ public class StaffManager : MonoBehaviour
                         factoryName = "Factory_" + (j * 10 + i);
                     }
                     GameObject staffObj = Instantiate(staff);
-                    staffObj.transform.position = GameObject.Find(factoryName + "/Bed/Bed_" + k).transform.position;
+                    Vector3 spawnPos = GameObject.Find(factoryName + "/Bed/Bed_" + k).transform.position;
+                    staffObj.transform.position = new Vector3(spawnPos.x, spawnPos.y + 1, spawnPos.z);
                     // 스태프 이름 변경
                     if (j == 0)
                     {

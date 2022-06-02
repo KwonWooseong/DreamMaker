@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Staff : MonoBehaviour
 {
-    int emotion, emotionMax, deltaEmotionMin, deltaEmotionMax,
+    int emotion, emotionMax, deltaEmotionMin, deltaEmotionMax, deltaEmotionbyDrug,
         keywordMax, tempkeywordMax, dreamKeywords, dreamKeywordMax;
     float makeTime, restTime;
 
@@ -22,6 +22,7 @@ public class Staff : MonoBehaviour
 
         deltaEmotionMin = GameManager.instance.deltaEmotionMin;
         deltaEmotionMax = GameManager.instance.deltaEmotionMax;
+        deltaEmotionbyDrug = GameManager.instance.deltaEmotionbyDrug;
 
         makeTime = GameManager.instance.makeTime;
         restTime = GameManager.instance.restTime;
@@ -109,20 +110,39 @@ public class Staff : MonoBehaviour
         canSleep = true;
     }
 
-    public void Info()
+    public void SetInfo()
     {
+        Info.instance.emotion = emotion;
+        Info.instance.emotionMax = emotionMax;
 
+        for (int i = 0; i < 7; i++)
+        {
+            if (i < keywordLike.Count)
+            {
+                Info.instance.like[i] = GameManager.instance.keyword[keywordLike[i]];
+            }
+            else Info.instance.like[i] = "";
+            if (i < keywordHate.Count)
+            {
+                Info.instance.hate[i] = GameManager.instance.keyword[keywordHate[i]];
+            }
+            else Info.instance.hate[i] = "";
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "blue")
+        if(other.tag == "Blue")
         {
-
+            Debug.Log("Dose Blue!");
+            emotion += Random.Range((int)(deltaEmotionbyDrug / 2), deltaEmotionbyDrug);
+            Destroy(other);
         }
-
-        if(other.tag == "red")
+        if(other.tag == "Red")
         {
+            Debug.Log("Dose Red!");
+            emotion -= Random.Range((int)(deltaEmotionbyDrug / 2), deltaEmotionbyDrug);
+            Destroy(other);
 
         }
     }

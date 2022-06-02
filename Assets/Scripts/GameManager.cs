@@ -23,11 +23,12 @@ public class GameManager : MonoBehaviour
     public int keywordMax = 10;
     public int deltaEmotionMin = 5;
     public int deltaEmotionMax = 10;
+    public int deltaEmotionbyDrug = 20;
 
     public float makeTime = 5.0f;
     public float restTime = 5.0f;
 
-
+    public RaycastHit hit;
     public GameObject factory;
     public GameObject info;
 
@@ -48,13 +49,12 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        ViewInfo();
     }
 
     void ViewInfo()
     {
         //메인카메라에서 마우스포인터 위치로 레이를 발사
-        RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Debug.DrawRay(ray.origin, ray.direction * 100, Color.red);
 
@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
             {
                 //Debug.Log("Staff Find!");
                 info.SetActive(true);
-                hit.transform.SendMessage("Info", SendMessageOptions.DontRequireReceiver);
+                hit.transform.SendMessage("SetInfo", SendMessageOptions.DontRequireReceiver);
 
                 DrugManager.instance.isLockedOn = true;
                 OrderManager.instance.isLockedOn = true;
