@@ -68,7 +68,6 @@ public class Staff : MonoBehaviour
             keywordMax = tempkeywordMax;
         }
     }
-
     IEnumerator MakeDream()
     {   //수면가능상태일때 
         if (canSleep)
@@ -110,4 +109,21 @@ public class Staff : MonoBehaviour
         canSleep = true;
     }
 
+    public void Info()
+    {
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "blue")
+        {
+
+        }
+
+        if(other.tag == "red")
+        {
+
+        }
+    }
 }

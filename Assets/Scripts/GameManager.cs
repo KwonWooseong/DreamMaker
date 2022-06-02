@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
 
 
     public GameObject factory;
+    public GameObject info;
 
     public static GameManager instance;
 
@@ -48,6 +49,33 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    void ViewInfo()
+    {
+        //메인카메라에서 마우스포인터 위치로 레이를 발사
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Debug.DrawRay(ray.origin, ray.direction * 100, Color.red);
+
+        if(Physics.Raycast(ray, out hit))
+        {   //레이어가 Staff인 오브젝트에 적중시 Staff Info 활성화, DrugManager와 OrderManager의 변수를 활성화
+            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Staff"))
+            {
+                //Debug.Log("Staff Find!");
+                info.SetActive(true);
+                hit.transform.SendMessage("Info", SendMessageOptions.DontRequireReceiver);
+
+                DrugManager.instance.isLockedOn = true;
+                OrderManager.instance.isLockedOn = true;
+            }
+            else
+            {   //미적중시 비활성화
+                info.SetActive(false);
+                DrugManager.instance.isLockedOn = false;
+                OrderManager.instance.isLockedOn = false;
+            }
+        }
     }
 
     void FactoryGen()

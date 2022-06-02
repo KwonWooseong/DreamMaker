@@ -32,90 +32,80 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        StartCoroutine(CameraMove());
+        Move();
+        //StartCoroutine(CameraMove());
     }
 
-    IEnumerator CameraMove()
-    {   //범위에서 벗어난 이동일 경우 이동을 취소
-        if (!isMoved)
+
+    void Move()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
         {
-            if (Input.GetKey(KeyCode.W) == true)
+            tempZ = z + 100;
+            tempCameraNum = cameraNum + 10;
+
+            if ((tempCameraNum < GameManager.instance.zLimit * 10) && (tempCameraNum >= 0))
             {
-                tempZ = z + 100;
-                tempCameraNum = cameraNum + 10;
+                z = tempZ;
+                cameraNum = tempCameraNum;
+                if (cameraNum < 10) cameraName = "CAMERA_0" + cameraNum;
+                else cameraName = "CAMERA_" + cameraNum;
 
-                if ((tempCameraNum < GameManager.instance.zLimit * 10) && (tempCameraNum >= 0))
-                {
-                    z = tempZ;
-                    cameraNum = tempCameraNum;
-                    if (cameraNum < 10) cameraName = "CAMERA_0" + cameraNum;
-                    else cameraName = "CAMERA_" + cameraNum;
-
-                    isMoved = true;
-                    gameObject.transform.position = new Vector3(x, 20, z);
-                    cameraTxt.text = cameraName;
-                    yield return new WaitForSeconds(2);
-                    isMoved = false;
-                }
+                isMoved = true;
+                gameObject.transform.position = new Vector3(x, 20, z);
+                cameraTxt.text = cameraName;
             }
-            else if (Input.GetKey(KeyCode.S) == true)
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            tempZ = z - 100;
+            tempCameraNum = cameraNum - 10;
+
+            if ((tempCameraNum < GameManager.instance.zLimit * 10) && (tempCameraNum >= 0))
             {
-                tempZ = z - 100;
-                tempCameraNum = cameraNum - 10;
+                z = tempZ;
+                cameraNum = tempCameraNum;
+                if (cameraNum < 10) cameraName = "CAMERA_0" + cameraNum;
+                else cameraName = "CAMERA_" + cameraNum;
 
-                if ((tempCameraNum < GameManager.instance.zLimit * 10) && (tempCameraNum >= 0))
-                {
-                    z = tempZ;
-                    cameraNum = tempCameraNum;
-                    if (cameraNum < 10) cameraName = "CAMERA_0" + cameraNum;
-                    else cameraName = "CAMERA_" + cameraNum;
-
-                    isMoved = true;
-                    gameObject.transform.position = new Vector3(x, 20, z);
-                    cameraTxt.text = cameraName;
-                    yield return new WaitForSeconds(2);
-                    isMoved = false;
-                }
+                isMoved = true;
+                gameObject.transform.position = new Vector3(x, 20, z);
+                cameraTxt.text = cameraName;
             }
-            else if (Input.GetKey(KeyCode.A) == true)
+        }
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            tempX = x - 100;
+            tempCameraNum = cameraNum - 1;
+
+            if (((tempCameraNum % 10) <= GameManager.instance.xLimit) && ((tempCameraNum % 10) > 0))
             {
-                tempX = x - 100;
-                tempCameraNum = cameraNum - 1;
+                x = tempX;
+                cameraNum = tempCameraNum;
+                if (cameraNum < 10) cameraName = "CAMERA_0" + cameraNum;
+                else cameraName = "CAMERA_" + cameraNum;
 
-                if (((tempCameraNum % 10) <= GameManager.instance.xLimit) && ((tempCameraNum % 10) > 0))
-                {
-                    x = tempX;
-                    cameraNum = tempCameraNum;
-                    if (cameraNum < 10) cameraName = "CAMERA_0" + cameraNum;
-                    else cameraName = "CAMERA_" + cameraNum;
-
-                    isMoved = true;
-                    gameObject.transform.position = new Vector3(x, 20, z);
-                    cameraTxt.text = cameraName;
-                    yield return new WaitForSeconds(2);
-                    isMoved = false;
-                }
+                isMoved = true;
+                gameObject.transform.position = new Vector3(x, 20, z);
+                cameraTxt.text = cameraName;
             }
-            else if (Input.GetKey(KeyCode.D) == true)
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            tempX = x + 100;
+            tempCameraNum = cameraNum + 1;
+
+            if (((tempCameraNum % 10) <= GameManager.instance.xLimit) && ((tempCameraNum % 10) > 0))
             {
-                tempX = x + 100;
-                tempCameraNum = cameraNum + 1;
+                x = tempX;
+                cameraNum = tempCameraNum;
+                if (cameraNum < 10) cameraName = "CAMERA_0" + cameraNum;
+                else cameraName = "CAMERA_" + cameraNum;
 
-                if (((tempCameraNum % 10) <= GameManager.instance.xLimit) && ((tempCameraNum % 10) > 0))
-                {
-                    x = tempX;
-                    cameraNum = tempCameraNum;
-                    if (cameraNum < 10) cameraName = "CAMERA_0" + cameraNum;
-                    else cameraName = "CAMERA_" + cameraNum;
-
-                    isMoved = true;
-                    gameObject.transform.position = new Vector3(x, 20, z);
-                    cameraTxt.text = cameraName;
-                    yield return new WaitForSeconds(2);
-                    isMoved = false;
-                }
+                isMoved = true;
+                gameObject.transform.position = new Vector3(x, 20, z);
+                cameraTxt.text = cameraName;
             }
-
         }
     }
 }
