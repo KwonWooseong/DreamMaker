@@ -52,7 +52,7 @@ public class Player : MonoBehaviour
                 else cameraName = "CAMERA_" + cameraNum;
 
                 isMoved = true;
-                gameObject.transform.position = new Vector3(x, 20, z);
+                gameObject.transform.position = new Vector3(x, 20.7f, z);
                 cameraTxt.text = cameraName;
             }
         }
@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
                 else cameraName = "CAMERA_" + cameraNum;
 
                 isMoved = true;
-                gameObject.transform.position = new Vector3(x, 20, z);
+                gameObject.transform.position = new Vector3(x, 20.7f, z);
                 cameraTxt.text = cameraName;
             }
         }
@@ -86,7 +86,7 @@ public class Player : MonoBehaviour
                 else cameraName = "CAMERA_" + cameraNum;
 
                 isMoved = true;
-                gameObject.transform.position = new Vector3(x, 20, z);
+                gameObject.transform.position = new Vector3(x, 20.7f, z);
                 cameraTxt.text = cameraName;
             }
         }
@@ -103,7 +103,7 @@ public class Player : MonoBehaviour
                 else cameraName = "CAMERA_" + cameraNum;
 
                 isMoved = true;
-                gameObject.transform.position = new Vector3(x, 20, z);
+                gameObject.transform.position = new Vector3(x, 20.7f, z);
                 cameraTxt.text = cameraName;
             }
         }
