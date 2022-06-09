@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -31,6 +32,8 @@ public class GameManager : MonoBehaviour
     public RaycastHit hit;
     public GameObject factory;
     public GameObject info;
+    public Image blue;
+    public Image red;
 
     public static GameManager instance;
 
@@ -68,12 +71,16 @@ public class GameManager : MonoBehaviour
 
                 DrugManager.instance.isLockedOn = true;
                 OrderManager.instance.isLockedOn = true;
+                blue.color = Color.white;
+                red.color = Color.white;
             }
             else
             {   //미적중시 비활성화
                 info.SetActive(false);
                 DrugManager.instance.isLockedOn = false;
                 OrderManager.instance.isLockedOn = false;
+                blue.color = Color.gray;
+                red.color = Color.gray;
             }
         }
     }
