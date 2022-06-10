@@ -5,24 +5,13 @@ using UnityEngine;
 public class StaffManager : MonoBehaviour
 {
     public GameObject staff;
+    public GameObject mosaic;
 
     public static StaffManager instance;
 
     private void Awake()
     {
         instance = this;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void StaffGen()
@@ -42,8 +31,10 @@ public class StaffManager : MonoBehaviour
                     {
                         factoryName = "Factory_" + (j * 10 + i);
                     }
+
                     GameObject staffObj = Instantiate(staff);
-                    Vector3 spawnPos = GameObject.Find(factoryName + "/Bed/Bed_" + k).transform.position;
+                    staffObj.transform.SetParent(GameObject.Find("Staff").transform);
+                    Vector3 spawnPos = GameObject.Find("Factory/" + factoryName + "/Bed/Bed_" + k).transform.position;
                     staffObj.transform.position = new Vector3(spawnPos.x, spawnPos.y + 1, spawnPos.z);
                     // 스태프 이름 변경
                     if (j == 0)
@@ -53,6 +44,18 @@ public class StaffManager : MonoBehaviour
                     else
                     {
                         staffObj.name = "Staff_" + (j * 10 + i) + "_" + k;
+                    }
+
+                    GameObject mosaicObj = Instantiate(mosaic);
+                    mosaicObj.transform.SetParent(GameObject.Find("Canvas/Mosaic").transform);
+                    // 스태프 이름 변경
+                    if (j == 0)
+                    {
+                        mosaicObj.name = "Mosaic_0" + i + "_" + k;
+                    }
+                    else
+                    {
+                        mosaicObj.name = "Mosaic_" + (j * 10 + i) + "_" + k;
                     }
                 }
             }

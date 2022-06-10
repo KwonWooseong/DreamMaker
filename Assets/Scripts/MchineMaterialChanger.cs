@@ -9,9 +9,9 @@ public class MchineMaterialChanger : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Material mat = this.GetComponent<MeshRenderer>().material;
+        //Material mat = this.GetComponent<MeshRenderer>().material;
 
-        mat = machineMat[Random.Range(0, 10)];
+        Material mat = machineMat[Random.Range(0, 10)];
 
         this.GetComponent<MeshRenderer>().material = mat;
     }

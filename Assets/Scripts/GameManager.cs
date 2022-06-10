@@ -45,14 +45,20 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        FactoryGen();
-        StaffManager.instance.StaffGen();
+        StartCoroutine(GameStart());
     }
 
     // Update is called once per frame
     void Update()
     {
         ViewInfo();
+    }
+
+    IEnumerator GameStart()
+    {
+        FactoryGen();
+        yield return new WaitForSeconds(1);
+        StaffManager.instance.StaffGen();
     }
 
     void ViewInfo()
@@ -94,6 +100,7 @@ public class GameManager : MonoBehaviour
                 //Debug.Log("factory spawn!");
 
                 GameObject factoryObj = Instantiate(factory);
+                factoryObj.transform.SetParent(GameObject.Find("Factory").transform);
                 
                 factoryObj.transform.position = new Vector3(i*100, 0, j*100);
 

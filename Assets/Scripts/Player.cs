@@ -12,6 +12,10 @@ public class Player : MonoBehaviour
     public bool isMoved = false;
 
     public Text cameraTxt;
+    public Text wTxt;
+    public Text sTxt;
+    public Text aTxt;
+    public Text dTxt;
 
     public static Player instance;
 
@@ -32,77 +36,70 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (z == (GameManager.instance.zLimit - 1) * 100) wTxt.color = Color.gray;
+        else wTxt.color = Color.white;
+
+        if (z == 0) sTxt.color = Color.gray;
+        else sTxt.color = Color.white;
+
+        if (x == 0) aTxt.color = Color.gray;
+        else aTxt.color = Color.white;
+
+        if (x == (GameManager.instance.xLimit - 1) * 100) dTxt.color = Color.gray;
+        else dTxt.color = Color.white;
+
         Move();
-        //StartCoroutine(CameraMove());
     }
-
-
     void Move()
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            tempZ = z + 100;
-            tempCameraNum = cameraNum + 10;
-
-            if ((tempCameraNum < GameManager.instance.zLimit * 10) && (tempCameraNum >= 0))
+            if(wTxt.color == Color.white)
             {
-                z = tempZ;
-                cameraNum = tempCameraNum;
+                z += 100;
+                cameraNum += 10;
                 if (cameraNum < 10) cameraName = "CAMERA_0" + cameraNum;
                 else cameraName = "CAMERA_" + cameraNum;
 
-                isMoved = true;
                 gameObject.transform.position = new Vector3(x, 20.7f, z);
                 cameraTxt.text = cameraName;
             }
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            tempZ = z - 100;
-            tempCameraNum = cameraNum - 10;
-
-            if ((tempCameraNum < GameManager.instance.zLimit * 10) && (tempCameraNum >= 0))
+            if (sTxt.color == Color.white)
             {
-                z = tempZ;
-                cameraNum = tempCameraNum;
+                z -= 100;
+                cameraNum -= 10;
                 if (cameraNum < 10) cameraName = "CAMERA_0" + cameraNum;
                 else cameraName = "CAMERA_" + cameraNum;
 
-                isMoved = true;
                 gameObject.transform.position = new Vector3(x, 20.7f, z);
                 cameraTxt.text = cameraName;
             }
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
-            tempX = x - 100;
-            tempCameraNum = cameraNum - 1;
-
-            if (((tempCameraNum % 10) <= GameManager.instance.xLimit) && ((tempCameraNum % 10) > 0))
+            if (aTxt.color == Color.white)
             {
-                x = tempX;
-                cameraNum = tempCameraNum;
+                x -= 100;
+                cameraNum -= 1;
                 if (cameraNum < 10) cameraName = "CAMERA_0" + cameraNum;
                 else cameraName = "CAMERA_" + cameraNum;
 
-                isMoved = true;
                 gameObject.transform.position = new Vector3(x, 20.7f, z);
                 cameraTxt.text = cameraName;
             }
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            tempX = x + 100;
-            tempCameraNum = cameraNum + 1;
-
-            if (((tempCameraNum % 10) <= GameManager.instance.xLimit) && ((tempCameraNum % 10) > 0))
+            if (dTxt.color == Color.white)
             {
-                x = tempX;
-                cameraNum = tempCameraNum;
+                x += 100;
+                cameraNum += 1;
                 if (cameraNum < 10) cameraName = "CAMERA_0" + cameraNum;
                 else cameraName = "CAMERA_" + cameraNum;
 
-                isMoved = true;
                 gameObject.transform.position = new Vector3(x, 20.7f, z);
                 cameraTxt.text = cameraName;
             }
