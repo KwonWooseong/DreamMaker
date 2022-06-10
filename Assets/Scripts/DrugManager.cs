@@ -50,8 +50,8 @@ public class DrugManager : MonoBehaviour
     void Dose()
     {
         if (isLockedOn)
-        {
-            if (Input.GetKeyDown(KeyCode.Mouse0) && canBlueDose == true)
+        {   //약 수가 남아있고 버튼을 누르면 약을 투여
+            if (Input.GetKeyDown(KeyCode.Mouse0) && canBlueDose)
             {
                 for(int i=0; i < blueDrug.Length; i++)
                 {
@@ -70,10 +70,8 @@ public class DrugManager : MonoBehaviour
                         break;
                     }
                 }
-
-
             }
-            if (Input.GetKeyDown(KeyCode.Mouse1) && canRedDose == true)
+            if (Input.GetKeyDown(KeyCode.Mouse1) && canRedDose)
             {
                 for (int i = 0; i < redDrug.Length; i++)
                 {
@@ -97,8 +95,8 @@ public class DrugManager : MonoBehaviour
     }
 
     IEnumerator Reload()
-    {
-        if (canBlueDose == false && lReloading == false && Input.GetKeyDown(KeyCode.R))
+    {   //약 수가 없고, 재입고중이 아니며 R키가 눌린경우 재입고
+        if (!canBlueDose && !lReloading && Input.GetKeyDown(KeyCode.R))
         {
             lReloading = true;
             lReload.text = "5";
@@ -121,7 +119,7 @@ public class DrugManager : MonoBehaviour
             lReloading = false;
         }
 
-        if (canRedDose == false && rReloading == false && Input.GetKeyDown(KeyCode.F))
+        if (!canRedDose && !rReloading && Input.GetKeyDown(KeyCode.F))
         {
             rReloading = true;
             rReload.text = "5";

@@ -75,7 +75,12 @@ public class Staff : MonoBehaviour
         {   //꿈키워드가 없다면 꿈키워드를 생성
             if (dreamKeyword.Count == 0)
             {
+                int dreamNum = Random.Range(dreamKeywordMax / 2, dreamKeywordMax);
 
+                for (int i = 0; i < dreamNum; i++)
+                {
+                    dreamKeyword.Add(Random.Range(0, GameManager.instance.keyword.Length));
+                }
             }
             //만약 꿈키워드가 있다면 바로 꿈 제작
             yield return new WaitForSeconds(dreamKeyword.Count * makeTime);
@@ -131,7 +136,7 @@ public class Staff : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
-    {
+    {   // 파란약과 접촉시 감정 증가, 빨간약과 접촉시 감정 감소
         if(other.tag == "Blue")
         {
             Debug.Log("Dose Blue!");

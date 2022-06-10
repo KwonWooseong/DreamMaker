@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {   // 이동 불가능 지역의 경우 이동UI 비활성화
         if (z == (GameManager.instance.zLimit - 1) * 100) wTxt.color = Color.gray;
         else wTxt.color = Color.white;
 
@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
         Move();
     }
     void Move()
-    {
+    {   // 목표지역이 이동불가능 지역이 아니라면 이동
         if (Input.GetKeyDown(KeyCode.W))
         {
             if(wTxt.color == Color.white)
