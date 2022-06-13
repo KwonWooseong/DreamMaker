@@ -8,11 +8,15 @@ public class Staff : MonoBehaviour
         keywordMax, tempkeywordMax, dreamKeywords, dreamKeywordMax;
     float makeTime, restTime;
 
-    public bool canSleep = false;
+    GameObject slight;
+
+    public bool canSleep = true;
 
     public List<int> keywordLike = new List<int>();
     public List<int> keywordHate = new List<int>();
     public List<int> dreamKeyword = new List<int>();
+
+    public GameObject sleepLight;
 
     // Start is called before the first frame update
     void Start()
@@ -29,12 +33,20 @@ public class Staff : MonoBehaviour
         dreamKeywordMax = GameManager.instance.dreamKeywordMax;
 
         RandomKeyword();
+
+        slight = Instantiate(sleepLight);
+        slight.transform.SetParent(GameObject.Find("Light").transform);
+        slight.name = "Light" + this.name.Substring(5, 5);
+        slight.transform.position = this.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
         StartCoroutine(MakeDream());
+
+        if (dreamKeyword.Count == 0) slight.SetActive(false);
+        else slight.SetActive(true);
     }
 
     void RandomKeyword()
@@ -73,6 +85,7 @@ public class Staff : MonoBehaviour
     {   //수면가능상태일때 
         if (canSleep)
         {   //꿈키워드가 없다면 꿈키워드를 생성
+            canSleep = false;
             if (dreamKeyword.Count == 0)
             {
                 int dreamNum = Random.Range(dreamKeywordMax / 2, dreamKeywordMax);
@@ -87,7 +100,7 @@ public class Staff : MonoBehaviour
             int dreams = 0;
 
             //
-            for (int i = 0; i < dreamKeyword.Count; i++)
+            while (dreamKeyword.Count!=0)
             {   //만약 꿈의 키워드가 선호, 불호 키워드에 있다면 감정 변화
                 //꿈 생산량을 증가시키고 리스트에서 제거
                 if (keywordLike.Contains(dreamKeyword[0])) emotion += Random.Range(deltaEmotionMin, deltaEmotionMax);
@@ -108,11 +121,11 @@ public class Staff : MonoBehaviour
                 GameManager.instance.PlusDream(dreams / 2);
                 GameManager.instance.MinusDream(dreams / 2);
             }
-        }
 
-        //휴식시간 경과후 수면가능상태로 전환
-        yield return new WaitForSeconds(restTime);
-        canSleep = true;
+            //휴식시간 경과후 수면가능상태로 전환
+            yield return new WaitForSeconds(restTime);
+            canSleep = true;
+        }
     }
 
     public void SetInfo()
@@ -141,14 +154,26 @@ public class Staff : MonoBehaviour
         {
             Debug.Log("Dose Blue!");
             emotion += Random.Range((int)(deltaEmotionbyDrug / 2), deltaEmotionbyDrug);
-            Destroy(other);
+            Destroy(other.gameObject);
         }
         if(other.tag == "Red")
         {
             Debug.Log("Dose Red!");
             emotion -= Random.Range((int)(deltaEmotionbyDrug / 2), deltaEmotionbyDrug);
-            Destroy(other);
-
+            Destroy(other.gameObject);
+        }
+        if(other.tag == "Order")
+        {
+            if(dreamKeyword.Count == 0)
+            {
+                Debug.Log("Order Accept!");
+                while (OrderManager.instance.orderList.Count != 0)
+                {
+                    dreamKeyword.Add(OrderManager.instance.orderList[0]);
+                    OrderManager.instance.orderList.Remove(OrderManager.instance.orderList[0]);
+                }
+            }
+            Destroy(other.gameObject);
         }
     }
 }

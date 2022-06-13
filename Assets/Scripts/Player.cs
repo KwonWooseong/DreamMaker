@@ -30,7 +30,8 @@ public class Player : MonoBehaviour
         x = 0;
         z = 0;
         cameraNum = 1;
-        cameraTxt.text = "CAMERA_01";
+        cameraName = "CAMERA_01";
+        cameraTxt.text = cameraName;
     }
 
     // Update is called once per frame

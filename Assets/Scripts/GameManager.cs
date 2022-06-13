@@ -14,8 +14,8 @@ public class GameManager : MonoBehaviour
         "카페", "공원", "바다", "산", "광장"
     };
 
-    public int xLimit = 3;  //min 1, max 9
-    public int zLimit = 2;
+    public int xLimit = 1;  //min 1, max 9
+    public int zLimit = 1;
     public int success = 0;
     public int fail = 0;
     public int emotionMin = 100;

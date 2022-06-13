@@ -11,14 +11,18 @@ public class OrderManager : MonoBehaviour
     bool isCounting = false;
     int count;
     int orderMax;
+    string cameraPos;
+    int[] sequence = { 1, 2, 3, 4 };
 
     public bool isLockedOn;
-    public Text countTxt;
 
     public List<int> orderList;
     public List<string> staff;
 
-    public GameObject order;
+    public Text countTxt;
+    public Image orderUI;
+    public GameObject openedOrderUI;
+    public GameObject orderPrefab;
 
     public static OrderManager instance;
 
@@ -36,6 +40,9 @@ public class OrderManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (orderList.Count == 0) orderUI.color = Color.gray;
+        else orderUI.color = Color.white;
+
         OpenAndCloseOrder();
         AcceptOrder();
         StartCoroutine(GetOrder()); 
@@ -49,38 +56,27 @@ public class OrderManager : MonoBehaviour
             if (activated == false)
             {
                 activated = true;
-                order.SetActive(true);
+                //openedOrderUI.SetActive(true);
             }
             else
             {
                 activated = false;
-                order.SetActive(false);
+                //openedOrderUI.SetActive(false);
             }
         }
     }
 
     void AcceptOrder()
-    {   //주문이 들어온상태에서 E를 누르면 주문을 수락
+    {   //주문이 들어온상태에서 E를 누르면 주문 수락을 시도
         if (isOrdered && Input.GetKeyDown(KeyCode.E))
         {
+            RandomSequence();
             //미구현
             for (int i = 0; i < 4; i++)
             {
-                //if(GameObject.Find("Staff/Staff_" + Player.instance.cameraName.Substring(7,2) + "_" + i).)
+                GameObject orderObj = Instantiate(orderPrefab);
+                orderObj.transform.position = GameObject.Find("Staff/Staff_" + Player.instance.cameraName.Substring(7, 2) + "_" + sequence[i]).transform.position;
             }
-
-            //개선필요
-            for (int i = 0; i < orderList.Count;)
-            {
-                orderList.Remove(orderList[i]);
-            }
-
-
-            countTxt.text = "";
-            //메리트 부여 미구현
-            isCounting = false;
-            isOrdered = false;
-            isAccepted = true;
         }
     }
 
@@ -107,13 +103,22 @@ public class OrderManager : MonoBehaviour
         if(!isAccepted && !isCounting)
         {   // 주문이 들어오고 미수락상태일시 카운트다운 진행
             isCounting = true;
-            count = 21;
+            count = 31;
             countTxt.text = "new";
 
             while (isCounting)
-            {
-                yield return new WaitForSeconds(1);
+            {   //주문이 수락된 상태가 되면 
+                if (orderList.Count == 0)
+                {
+                    countTxt.text = "";
+                    //메리트 부여 미구현
+                    isAccepted = true;
+                    isOrdered = false;
+                    isCounting = false;
+                    break;
+                }
 
+                yield return new WaitForSeconds(1);
                 count--;
                 countTxt.text = "" + count;
 
@@ -132,6 +137,17 @@ public class OrderManager : MonoBehaviour
                     isCounting = false;
                 }
             }
+        }
+    }
+
+    void RandomSequence()
+    {
+        for(int i=0; i<4; i++)
+        {
+            int temp = sequence[i];
+            int rand = Random.Range(0, 4);
+            sequence[i] = sequence[rand];
+            sequence[rand] = temp;
         }
     }
 }
