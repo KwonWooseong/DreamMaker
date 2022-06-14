@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class Staff : MonoBehaviour
 {
-    int emotion, emotionMax, deltaEmotionMin, deltaEmotionMax, deltaEmotionbyDrug,
+    int deltaEmotionMin, deltaEmotionMax, deltaEmotionbyDrug,
         keywordMax, tempkeywordMax, dreamKeywords, dreamKeywordMax;
     float makeTime, restTime;
 
     GameObject slight;
 
+    public int emotion, emotionMax;
     public bool canSleep = true;
 
     public List<int> keywordLike = new List<int>();
@@ -44,6 +45,9 @@ public class Staff : MonoBehaviour
     void Update()
     {
         StartCoroutine(MakeDream());
+
+        if (emotion > emotionMax) emotion = emotionMax;
+        if (emotion < 0) emotion = 0;
 
         if (dreamKeyword.Count == 0) slight.SetActive(false);
         else slight.SetActive(true);

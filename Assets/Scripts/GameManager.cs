@@ -5,17 +5,27 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public enum GameState
+    {
+        MENU,
+        START,
+        PLAY,
+        END
+    }
+
     public string[] keyword = new string[25]
     {   // 키워드를 string으로 사용할때 GameManager 참조
         "개", "고양이", "벌", "뱀", "거미",
         "민트초코", "두리안", "오이", "땅콩", "우유",
-        "인형", "라이터", "열쇠", "야구방망이", "사다리",
+        "인형", "라이터", "열쇠", "방망이", "사다리",
         "요리사", "의사", "변호사", "경찰", "광대",
         "카페", "공원", "바다", "산", "광장"
     };
 
-    public int xLimit = 1;  //min 1, max 9
-    public int zLimit = 1;
+    int time;
+
+    public int xLimit = 2;  //min 1, max 9
+    public int zLimit = 2;
     public int success = 0;
     public int fail = 0;
     public int emotionMin = 100;
@@ -25,6 +35,7 @@ public class GameManager : MonoBehaviour
     public int deltaEmotionMin = 5;
     public int deltaEmotionMax = 10;
     public int deltaEmotionbyDrug = 20;
+    public int gold = 500;
 
     public float makeTime = 5.0f;
     public float restTime = 5.0f;
@@ -32,8 +43,8 @@ public class GameManager : MonoBehaviour
     public RaycastHit hit;
     public GameObject factory;
     public GameObject info;
-    public Image blue;
-    public Image red;
+    public Image timeImg, blue, red;
+    public Text timeTxt, GoldTxt;
 
     public static GameManager instance;
 
@@ -51,7 +62,26 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
+
+
+
+
+
+
+
         ViewInfo();
+
+        if(time <= 5)
+        {
+            timeTxt.color = Color.red;
+        }
+        else
+        {
+            timeTxt.color = Color.white;
+        }
+        
     }
 
     IEnumerator GameStart()
@@ -59,6 +89,17 @@ public class GameManager : MonoBehaviour
         FactoryGen();
         yield return new WaitForSeconds(1);
         StaffManager.instance.StaffGen();
+
+        time = 300;
+        timeTxt.text = "" + time;
+
+        while(time > 0)
+        {
+            yield return new WaitForSeconds(1);
+            time--;
+            timeTxt.text = "" + time;
+        }
+        
     }
 
     void ViewInfo()

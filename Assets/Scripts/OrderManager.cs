@@ -9,8 +9,7 @@ public class OrderManager : MonoBehaviour
     bool activated = false;
     bool isAccepted = true;
     bool isCounting = false;
-    int count;
-    int orderMax;
+    int count, orderMax, orderNum, reward;
     string cameraPos;
     int[] sequence = { 1, 2, 3, 4 };
 
@@ -20,7 +19,10 @@ public class OrderManager : MonoBehaviour
     public List<string> staff;
 
     public Text countTxt;
+    public Text rewardTxt;
+    public Text[] keywords;
     public Image orderUI;
+    public Image qBtn;
     public GameObject openedOrderUI;
     public GameObject orderPrefab;
 
@@ -40,9 +42,16 @@ public class OrderManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (orderList.Count == 0) orderUI.color = Color.gray;
-        else orderUI.color = Color.white;
-
+        if (orderList.Count == 0)
+        {
+            orderUI.color = Color.gray;
+            qBtn.color = Color.gray;
+        }
+        else
+        {
+            orderUI.color = Color.white;
+            qBtn.color = Color.white;
+        }
         OpenAndCloseOrder();
         AcceptOrder();
         StartCoroutine(GetOrder()); 
@@ -56,12 +65,12 @@ public class OrderManager : MonoBehaviour
             if (activated == false)
             {
                 activated = true;
-                //openedOrderUI.SetActive(true);
+                openedOrderUI.SetActive(true);
             }
             else
             {
                 activated = false;
-                //openedOrderUI.SetActive(false);
+                openedOrderUI.SetActive(false);
             }
         }
     }
@@ -87,9 +96,10 @@ public class OrderManager : MonoBehaviour
             isOrdered = true;
             yield return new WaitForSeconds(Random.Range(5,10));
 
-            int orderNum = Random.Range(orderMax / 2, orderMax);
+            orderNum = Random.Range(orderMax / 2, orderMax);
+            reward = Random.Range(orderNum, orderNum * 2) * 50;
 
-            for(int i = 0; i < orderNum; i++)
+            for (int i = 0; i < orderNum; i++)
             {
                 orderList.Add(Random.Range(0, GameManager.instance.keyword.Length));
             }
@@ -111,7 +121,7 @@ public class OrderManager : MonoBehaviour
                 if (orderList.Count == 0)
                 {
                     countTxt.text = "";
-                    //메리트 부여 미구현
+                    GameManager.instance.gold += reward;
                     isAccepted = true;
                     isOrdered = false;
                     isCounting = false;
@@ -131,7 +141,7 @@ public class OrderManager : MonoBehaviour
 
                     countTxt.text = "";
 
-                    //패널티 부여 미구현
+                    GameManager.instance.gold -= 100;
                     isAccepted = true;
                     isOrdered = false;
                     isCounting = false;
