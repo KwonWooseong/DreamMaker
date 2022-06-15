@@ -52,6 +52,19 @@ public class OrderManager : MonoBehaviour
             orderUI.color = Color.white;
             qBtn.color = Color.white;
         }
+
+        for(int i=0; i<keywords.Length; i++)
+        {
+            if(i < orderList.Count)
+            {
+                keywords[i].text = GameManager.instance.keyword[orderList[i]];
+            }
+            else
+            {
+                keywords[i].text = "";
+            }
+        }
+
         OpenAndCloseOrder();
         AcceptOrder();
         StartCoroutine(GetOrder()); 

@@ -47,7 +47,7 @@ public class StaffManager : MonoBehaviour
                     }
 
                     GameObject mosaicObj = Instantiate(mosaic);
-                    mosaicObj.transform.SetParent(GameObject.Find("Canvas/Mosaic").transform);
+                    mosaicObj.transform.SetParent(GameObject.Find("Canvas/MainUICanvas/Mosaic").transform);
                     // 모자이크 이름 변경
                     if (j == 0)
                     {
