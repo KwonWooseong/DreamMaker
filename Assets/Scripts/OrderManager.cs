@@ -42,33 +42,38 @@ public class OrderManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (orderList.Count == 0)
+        if (GameManager.instance.state == GameManager.GameState.PLAY)
         {
-            orderUI.color = Color.gray;
-            qBtn.color = Color.gray;
-        }
-        else
-        {
-            orderUI.color = Color.white;
-            qBtn.color = Color.white;
-        }
-
-        for(int i=0; i<keywords.Length; i++)
-        {
-            if(i < orderList.Count)
+            if (orderList.Count == 0)
             {
-                keywords[i].text = GameManager.instance.keyword[orderList[i]];
+                orderUI.color = Color.gray;
+                qBtn.color = Color.gray;
             }
             else
             {
-                keywords[i].text = "";
+                orderUI.color = Color.white;
+                qBtn.color = Color.white;
             }
-        }
 
-        OpenAndCloseOrder();
-        AcceptOrder();
-        StartCoroutine(GetOrder()); 
-        StartCoroutine(AcceptCount());
+            for (int i = 0; i < keywords.Length; i++)
+            {
+                if (i < orderList.Count)
+                {
+                    keywords[i].text = GameManager.instance.keyword[orderList[i]];
+                }
+                else
+                {
+                    keywords[i].text = "";
+                }
+            }
+
+            rewardTxt.text = "" + reward;
+
+            OpenAndCloseOrder();
+            AcceptOrder();
+            StartCoroutine(GetOrder());
+            StartCoroutine(AcceptCount());
+        }
     }
 
     void OpenAndCloseOrder()
@@ -138,6 +143,7 @@ public class OrderManager : MonoBehaviour
                     isAccepted = true;
                     isOrdered = false;
                     isCounting = false;
+                    reward = 0;
                     break;
                 }
 
@@ -158,6 +164,7 @@ public class OrderManager : MonoBehaviour
                     isAccepted = true;
                     isOrdered = false;
                     isCounting = false;
+                    reward = 0;
                 }
             }
         }

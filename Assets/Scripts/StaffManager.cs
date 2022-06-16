@@ -46,8 +46,11 @@ public class StaffManager : MonoBehaviour
                         staffObj.name = "Staff_" + (j * 10 + i) + "_" + k;
                     }
 
-                    GameObject mosaicObj = Instantiate(mosaic);
-                    mosaicObj.transform.SetParent(GameObject.Find("Canvas/MainUICanvas/Mosaic").transform);
+                    //GameObject mosaicObj = Instantiate(mosaic);
+
+                    GameObject mosaicObj = Instantiate(mosaic, Camera.main.WorldToScreenPoint(staffObj.transform.position), Quaternion.identity, GameObject.Find("Canvas/MainUICanvas/Mosaic").transform);
+
+                    //mosaicObj.transform.SetParent(GameObject.Find("Canvas/MainUICanvas/Mosaic").transform);
                     // 모자이크 이름 변경
                     if (j == 0)
                     {

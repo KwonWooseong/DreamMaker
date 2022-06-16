@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
         "카페", "공원", "바다", "산", "광장"
     };
 
+    bool started, onPlay;
     int time;
 
     public int xLimit = 2;  //min 1, max 9
@@ -36,15 +37,14 @@ public class GameManager : MonoBehaviour
     public int deltaEmotionMax = 10;
     public int deltaEmotionbyDrug = 20;
     public int gold = 500;
-
-    public float makeTime = 5.0f;
+    public float makeTime = 4.0f;
     public float restTime = 5.0f;
 
+    public GameState state;
     public RaycastHit hit;
-    public GameObject factory;
-    public GameObject info;
+    public GameObject factory, info, loading, openingCheck, rotatingCheck, cencoringCheck,playButton, doorObj;
+    public Text timeTxt, goldTxt;
     public Image timeImg, blue, red;
-    public Text timeTxt, GoldTxt;
 
     public static GameManager instance;
 
@@ -56,50 +56,95 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(GameStart());
+        state = GameState.MENU;
+
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
-
-
-
-
-
-
-
-
-        ViewInfo();
-
-        if(time <= 5)
+        if(state == GameState.MENU)
         {
-            timeTxt.color = Color.red;
+            started = false;
+            onPlay = false;
+
         }
-        else
+        else if(state == GameState.START)
         {
-            timeTxt.color = Color.white;
+            StartCoroutine(GameStart());
+
         }
-        
+        else if(state == GameState.PLAY)
+        {
+            StartCoroutine(Playing());
+
+            ViewInfo();
+            goldTxt.text = "" + gold;
+
+            if (time <= 5)
+            {
+                timeTxt.color = Color.red;
+            }
+            else
+            {
+                timeTxt.color = Color.white;
+            }
+
+            if(time <= 0)
+            {
+                state = GameState.END;
+            }
+        }
+        else if(state == GameState.END)
+        {
+
+        }
     }
 
     IEnumerator GameStart()
     {
-        FactoryGen();
-        yield return new WaitForSeconds(1);
-        StaffManager.instance.StaffGen();
-
-        time = 300;
-        timeTxt.text = "" + time;
-
-        while(time > 0)
+        if (!started)
         {
+            started = true;
+            playButton.SetActive(false);
+            loading.SetActive(true);
+
+            FactoryGen();
             yield return new WaitForSeconds(1);
-            time--;
-            timeTxt.text = "" + time;
+            openingCheck.SetActive(true);
+
+            StaffManager.instance.StaffGen();
+            yield return new WaitForSeconds(0.8f);
+            rotatingCheck.SetActive(true);
+
+            yield return new WaitForSeconds(0.5f);
+            cencoringCheck.SetActive(true);
+
+            yield return new WaitForSeconds(0.3f);
+            doorObj.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 45000f);
+            Destroy(doorObj.gameObject, 1f);
+
+            state = GameState.PLAY;
         }
-        
+    }
+
+    IEnumerator Playing()
+    {
+        if (!onPlay)
+        {
+            onPlay = true;
+
+            time = 100;
+            timeTxt.text = "" + time;
+
+            while (time > 0)
+            {
+                yield return new WaitForSeconds(1);
+                time--;
+                timeTxt.text = "" + time;
+            }
+        }
     }
 
     void ViewInfo()
@@ -156,6 +201,11 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void PlayeStart()
+    {
+        state = GameState.START;
     }
 
     public void PlusDream(int dreams)

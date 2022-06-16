@@ -99,10 +99,6 @@ public class DrugManager : MonoBehaviour
         if (!canBlueDose && !lReloading && Input.GetKeyDown(KeyCode.R))
         {
             lReloading = true;
-            lReload.text = "5";
-            yield return new WaitForSeconds(1);
-            lReload.text = "4";
-            yield return new WaitForSeconds(1);
             lReload.text = "3";
             yield return new WaitForSeconds(1);
             lReload.text = "2";
@@ -122,10 +118,6 @@ public class DrugManager : MonoBehaviour
         if (!canRedDose && !rReloading && Input.GetKeyDown(KeyCode.F))
         {
             rReloading = true;
-            rReload.text = "5";
-            yield return new WaitForSeconds(1);
-            rReload.text = "4";
-            yield return new WaitForSeconds(1);
             rReload.text = "3";
             yield return new WaitForSeconds(1);
             rReload.text = "2";

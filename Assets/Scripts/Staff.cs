@@ -87,48 +87,52 @@ public class Staff : MonoBehaviour
     }
     IEnumerator MakeDream()
     {   //수면가능상태일때 
-        if (canSleep)
-        {   //꿈키워드가 없다면 꿈키워드를 생성
-            canSleep = false;
-            if (dreamKeyword.Count == 0)
-            {
-                int dreamNum = Random.Range(dreamKeywordMax / 2, dreamKeywordMax);
 
-                for (int i = 0; i < dreamNum; i++)
+        if(GameManager.instance.state == GameManager.GameState.PLAY)
+        {
+            if (canSleep)
+            {   //꿈키워드가 없다면 꿈키워드를 생성
+                canSleep = false;
+                if (dreamKeyword.Count == 0)
                 {
-                    dreamKeyword.Add(Random.Range(0, GameManager.instance.keyword.Length));
+                    int dreamNum = Random.Range(dreamKeywordMax / 2, dreamKeywordMax);
+
+                    for (int i = 0; i < dreamNum; i++)
+                    {
+                        dreamKeyword.Add(Random.Range(0, GameManager.instance.keyword.Length));
+                    }
                 }
-            }
-            //만약 꿈키워드가 있다면 바로 꿈 제작
-            yield return new WaitForSeconds(dreamKeyword.Count * makeTime);
-            int dreams = 0;
+                //만약 꿈키워드가 있다면 바로 꿈 제작
+                yield return new WaitForSeconds(dreamKeyword.Count * makeTime);
+                int dreams = 0;
 
-            //
-            while (dreamKeyword.Count!=0)
-            {   //만약 꿈의 키워드가 선호, 불호 키워드에 있다면 감정 변화
-                //꿈 생산량을 증가시키고 리스트에서 제거
-                if (keywordLike.Contains(dreamKeyword[0])) emotion += Random.Range(deltaEmotionMin, deltaEmotionMax);
-                else if (keywordHate.Contains(dreamKeyword[0])) emotion -= Random.Range(deltaEmotionMin, deltaEmotionMax);
-                dreams++;
-                dreamKeyword.Remove(dreamKeyword[0]);
-            }
+                //
+                while (dreamKeyword.Count != 0)
+                {   //만약 꿈의 키워드가 선호, 불호 키워드에 있다면 감정 변화
+                    //꿈 생산량을 증가시키고 리스트에서 제거
+                    if (keywordLike.Contains(dreamKeyword[0])) emotion += Random.Range(deltaEmotionMin, deltaEmotionMax);
+                    else if (keywordHate.Contains(dreamKeyword[0])) emotion -= Random.Range(deltaEmotionMin, deltaEmotionMax);
+                    dreams++;
+                    dreamKeyword.Remove(dreamKeyword[0]);
+                }
 
-            //변화된 최종 감정의 비율에 따라서 생산량을 배분
-            // 0%~20%, 80%~100% 전부 실패
-            // 20%~40%, 60%~80% 반 성공 반 실패
-            // 40%~60% 전부 성공
-            float emotionRate = (float)emotion / (float)emotionMax;
-            if (emotionRate < 0.2 || emotionRate > 0.8) GameManager.instance.MinusDream(dreams);
-            else if (emotionRate >= 0.4 && emotionRate <= 0.6) GameManager.instance.PlusDream(dreams);
-            else
-            {
-                GameManager.instance.PlusDream(dreams / 2);
-                GameManager.instance.MinusDream(dreams / 2);
-            }
+                //변화된 최종 감정의 비율에 따라서 생산량을 배분
+                // 0%~20%, 80%~100% 전부 실패
+                // 20%~40%, 60%~80% 반 성공 반 실패
+                // 40%~60% 전부 성공
+                float emotionRate = (float)emotion / (float)emotionMax;
+                if (emotionRate < 0.2 || emotionRate > 0.8) GameManager.instance.MinusDream(dreams);
+                else if (emotionRate >= 0.4 && emotionRate <= 0.6) GameManager.instance.PlusDream(dreams);
+                else
+                {
+                    GameManager.instance.PlusDream(dreams / 2);
+                    GameManager.instance.MinusDream(dreams / 2);
+                }
 
-            //휴식시간 경과후 수면가능상태로 전환
-            yield return new WaitForSeconds(restTime);
-            canSleep = true;
+                //휴식시간 경과후 수면가능상태로 전환
+                yield return new WaitForSeconds(restTime);
+                canSleep = true;
+            }
         }
     }
 
